@@ -1,0 +1,2 @@
+db_connection_string: postgresql+asyncpg://booking_user:12345678@localhost/booking_db
+cors_origins: http://localhost,http://localhost:3000
