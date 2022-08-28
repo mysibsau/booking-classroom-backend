@@ -6,4 +6,5 @@ starlette>=0.14.2
 pydantic>=1.9.1
 sqlalchemy>=1.4.37
 asyncpg>=0.25.0
-alembic==1.8.0
+alembic==1.8.
+sqladmin~=0.3.0
