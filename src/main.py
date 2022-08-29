@@ -6,12 +6,10 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from admin import AdminApp
 from di_container import Container
+from controllers import room_controller
 
 
 def create_app() -> FastAPI:
-    """Factory that create FastAPI application.
-
-    """
 
     container = Container()
     container.config.from_yaml('config/config.yaml')
@@ -19,8 +17,9 @@ def create_app() -> FastAPI:
         title="classroom-booking",
         version="0.0.1",
     )
-
+    container.wire(modules=[room_controller])
     app.container = container
+    app.include_router(room_controller.router)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=container.config()['cors_origins'].split(','),
