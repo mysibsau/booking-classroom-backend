@@ -13,7 +13,7 @@ class RoomService:
     def __init__(self, psql_service: PsqlService):
         self.__psql_service = psql_service
 
-    async def search_playlist(self, request: RoomListRequestScheme) -> RoomListResponseScheme:
+    async def search_room(self, request: RoomListRequestScheme) -> RoomListResponseScheme:
 
         search_query = select(Room)
 
