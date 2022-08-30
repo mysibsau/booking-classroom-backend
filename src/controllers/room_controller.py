@@ -12,4 +12,4 @@ router = APIRouter(tags=["room"])
 @inject
 async def get_rooms(request: RoomListRequestScheme, room_service: RoomService = Depends(Provide[Container.room_service])):
 
-    return await room_service.search_playlist(request)
+    return await room_service.search_room(request)

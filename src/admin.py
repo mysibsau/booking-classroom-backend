@@ -3,6 +3,8 @@ from sqladmin import Admin, ModelView
 from models.user import User
 from models.room import Room
 from models.equipment import Equipment
+from models.booking import Booking
+from models.booking_datetime import BookingDateTime
 from models.room_equipment_association import RoomEquipmentAssociation
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -17,10 +19,12 @@ class AdminApp:
         self.admin.add_view(RoomAdmin)
         self.admin.add_view(EquipmentAdmin)
         self.admin.add_view(EquipmentInRoomAdmin)
+        self.admin.add_view(BookingAdmin)
+        self.admin.add_view(DateAdmin)
 
 
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.name, User.role, User.status, User.position]
+    column_list = [User.id, User.name, User.role]
 
 
 class RoomAdmin(ModelView, model=Room):
@@ -37,3 +41,11 @@ class EquipmentInRoomAdmin(ModelView, model=RoomEquipmentAssociation):
         RoomEquipmentAssociation.equipment,
         RoomEquipmentAssociation.count,
         ]
+
+
+class BookingAdmin(ModelView, model=Booking):
+    column_list = [Booking.user, Booking.contact_info, Booking.booking_date_time]
+
+
+class DateAdmin(ModelView, model=BookingDateTime):
+    column_list = [BookingDateTime.date, BookingDateTime.start_time, BookingDateTime.end_time]
