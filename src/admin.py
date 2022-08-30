@@ -20,7 +20,6 @@ class AdminApp:
         self.admin.add_view(EquipmentAdmin)
         self.admin.add_view(EquipmentInRoomAdmin)
         self.admin.add_view(BookingAdmin)
-        self.admin.add_view(DateAdmin)
 
 
 class UserAdmin(ModelView, model=User):
@@ -44,8 +43,4 @@ class EquipmentInRoomAdmin(ModelView, model=RoomEquipmentAssociation):
 
 
 class BookingAdmin(ModelView, model=Booking):
-    column_list = [Booking.user, Booking.contact_info, Booking.booking_date_time]
-
-
-class DateAdmin(ModelView, model=BookingDateTime):
-    column_list = [BookingDateTime.date, BookingDateTime.start_time, BookingDateTime.end_time]
+    column_list = []
