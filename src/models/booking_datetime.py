@@ -9,10 +9,9 @@ class BookingDateTime(Base):
 
     id = Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
     booking_id = Column(UUID, ForeignKey("booking.id"))
-    date = Column(Date, nullable=False)
-    start_time = Column(Time, nullable=False)
-    end_time = Column(Time, nullable=False)
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=False)
     booking = relationship("Booking", back_populates="booking_date_time", lazy='subquery')
 
     def __repr__(self):
-        return f"{self.date}, {self.start_time} - {self.end_time}"
+        return f"{self.start_time} - {self.end_time}"

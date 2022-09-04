@@ -3,8 +3,6 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exception_handlers import http_exception_handler
 from starlette.exceptions import HTTPException as StarletteHTTPException
-
-from admin import AdminApp
 from di_container import Container
 from controllers import room_controller, booking_controller
 
@@ -28,7 +26,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    AdminApp(app, container.config()["db_connection_string"])
+
     return app
 
 

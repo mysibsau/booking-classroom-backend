@@ -1,14 +1,13 @@
-from datetime import time, date
+from datetime import datetime
 
-from pydantic import BaseModel, Field, UUID4
+from pydantic import BaseModel, Field
 
 from schemas.enums.user_status_enum import UserStatusEnum
 
 
 class BookingDateTimeScheme(BaseModel):
-    booking_date: date = Field(...)
-    start_time: time = Field(...)
-    end_time: time = Field(...)
+    start_time: datetime = Field(...)
+    end_time: datetime = Field(...)
 
 
 class CreateBookingScheme(BaseModel):
