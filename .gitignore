@@ -1,0 +1,8 @@
+/.vscode
+/env
+__pycache__
+/venv
+.idea
+*.jpg
+*.mp4
+*.png
