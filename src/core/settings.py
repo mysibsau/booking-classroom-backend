@@ -17,7 +17,6 @@ import django_on_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -30,7 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = "user.User"
-
 
 # Application definition
 
@@ -57,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -79,21 +78,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'booking_db',
-        'USER': 'booking_user',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'NAME': os.environ.get('POSTGRES_DB', 'booking_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'booking_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '12345678'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -130,7 +127,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -140,13 +136,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
