@@ -34,15 +34,16 @@ class RoomPhoto(models.Model):
     )
     photo = models.ImageField("Фотография", upload_to="images/")
 
-    def __str__(self):
-        return ""
-
     def save(self, *args, **kwargs):
-        super().save()
+        super().save(*args, **kwargs)
         img = Image.open(self.photo.path)
+
         output_size = (1280, 720)
         img.thumbnail(output_size)
         img.save(self.photo.path)
+
+    def __str__(self):
+        return ""
 
     class Meta:
         verbose_name = 'Фотография'
