@@ -61,11 +61,11 @@ class BookingAdmin(admin.ModelAdmin):
 
     def booking_status(self, obj):
         if obj.status == 0:
-            return format_html('<div style="width:10; height:10; background-color:yellow;">В обработке</div>')
+            return format_html('<div style="width:10; height:10; background-color:#ffc188;color:white;padding:5px;border-radius:8px;font-size:16px;font-weight:600;">В обработке</div>')
         elif obj.status == 1:
-            return format_html('<div style="width:10; height:10; background-color:green;">Одобрено</div>')
-
-        return format_html('<div style="width:10; height:10; background-color:red;">Отклонено</div>')
+            return format_html('<div style="width:10; height:10; background-color:#ff6363;color:white;padding:5px;border-radius:8px;font-size:16px;font-weight:600;">Отклонено</div>')
+        else:
+            return format_html('<div style="width:10; height:10; background-color:#7dc71c;color:white;padding:5px;border-radius:8px;font-size:16px;font-weight:600;">Одобрено</div>')
 
     booking_status.short_description = "Статус заявки"
     booking_status.allow_tags = True

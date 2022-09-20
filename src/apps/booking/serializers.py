@@ -4,20 +4,30 @@ from .models.room import Room, RoomPhoto
 from .models.equipment import Equipment
 from .models.booking import Booking
 from .models.booking_date_time import BookingDateTime
+from .models.equipment_in_room import EquipmentInRoom
 
 
-class EquipmentSerializer(serializers.ModelSerializer):
+class BookingRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Equipment
-        fields = "__all__"
+        model = Room
+        fields = ["address", ]
+
+
+class EquipmentInRoomSerializer(serializers.ModelSerializer):
+    equipment = serializers.ReadOnlyField(source='equipment.name')
+    description = serializers.ReadOnlyField(source='equipment.description')
+
+    class Meta:
+        model = EquipmentInRoom
+        fields = ['equipment', 'description', 'count']
 
 
 class RoomPhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RoomPhoto
-        fields = ["id", "photo", ]
+        fields = ["photo", ]
 
 
 class BookingDateTimeSerializer(serializers.ModelSerializer):
@@ -28,7 +38,7 @@ class BookingDateTimeSerializer(serializers.ModelSerializer):
 
 
 class RoomSerializer(serializers.ModelSerializer):
-    equipment = EquipmentSerializer(many=True, read_only=True)
+    equipment = EquipmentInRoomSerializer(source='equipmentinroom_set', many=True)
     room_photo = RoomPhotoSerializer(many=True, read_only=True)
 
     class Meta:
@@ -39,6 +49,7 @@ class RoomSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     booking_date_time = BookingDateTimeSerializer(many=True)
+    room = BookingRoomSerializer()
 
     class Meta:
         model = Booking
