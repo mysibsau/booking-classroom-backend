@@ -11,9 +11,9 @@ from apps.booking.urls import urls
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Test tasl api",
+      title="booking-classroom-api",
       default_version='v1',
-      description="Test task for alente",
+      description="booking-classroom-docs",
    ),
    public=True,
    permission_classes=(permissions.AllowAny,),

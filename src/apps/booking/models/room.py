@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from PIL import Image
 
 from .equipment import Equipment
 
@@ -35,6 +36,13 @@ class RoomPhoto(models.Model):
 
     def __str__(self):
         return ""
+
+    def save(self, *args, **kwargs):
+        super().save()
+        img = Image.open(self.photo.path)
+        output_size = (1280, 720)
+        img.thumbnail(output_size)
+        img.save(self.photo.path)
 
     class Meta:
         verbose_name = 'Фотография'

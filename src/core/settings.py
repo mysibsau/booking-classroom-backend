@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_cleanup.apps.CleanupConfig",
 
     "apps.user",
     "apps.booking",
