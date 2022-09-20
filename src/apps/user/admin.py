@@ -5,4 +5,4 @@ from apps.user import models
 
 @admin.register(models.User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('full_mame', 'status', 'position', 'role', )
+    list_display = ('full_mame', 'role', )
