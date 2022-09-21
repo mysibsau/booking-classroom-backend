@@ -1,3 +1,4 @@
+import django_filters
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
@@ -16,6 +17,7 @@ class ResultsSetPagination(PageNumberPagination):
 class RoomViewSet(ReadOnlyModelViewSet):
     pagination_class = ResultsSetPagination
     serializer_class = RoomSerializer
+    filter_fields = ['address', 'capacity', ]
     queryset = Room.objects.get_queryset().order_by('id')
 
 

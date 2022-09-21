@@ -49,7 +49,7 @@ class RoomSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     booking_date_time = BookingDateTimeSerializer(many=True)
-    room = BookingRoomSerializer
+    room = BookingRoomSerializer()
 
     class Meta:
         model = Booking
