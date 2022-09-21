@@ -14,6 +14,7 @@ class Room(models.Model):
     address = models.TextField("Адрес")
     capacity = models.PositiveIntegerField("Вместимость")
     equipment = models.ManyToManyField(Equipment, through='EquipmentInRoom', verbose_name="Оборудование в аудитории")
+    admin_contact_info = models.TextField('Контактная информация администратора', null=True, blank=True)
 
     def __str__(self):
         return f"{self.address}"

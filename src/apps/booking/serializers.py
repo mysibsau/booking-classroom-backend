@@ -11,7 +11,7 @@ class BookingRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ["address", ]
+        fields = ["address", 'admin_contact_info', ]
 
 
 class EquipmentInRoomSerializer(serializers.ModelSerializer):
