@@ -9,7 +9,14 @@ User = settings.AUTH_USER_MODEL
 
 
 class Room(models.Model):
-    admin = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, verbose_name="Администратор")
+    admin = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Администратор",
+        related_name="room_admin"
+    )
     description = models.TextField("Описание")
     address = models.TextField("Адрес")
     capacity = models.PositiveIntegerField("Вместимость")

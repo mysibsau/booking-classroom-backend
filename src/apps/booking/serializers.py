@@ -8,10 +8,11 @@ from .models.equipment_in_room import EquipmentInRoom
 
 
 class BookingRoomSerializer(serializers.ModelSerializer):
+    admin = serializers.SlugRelatedField(many=False, read_only=True, slug_field='full_name')
 
     class Meta:
         model = Room
-        fields = ["address", 'admin_contact_info', ]
+        fields = ["address", 'admin_contact_info', 'admin', ]
 
 
 class EquipmentInRoomSerializer(serializers.ModelSerializer):

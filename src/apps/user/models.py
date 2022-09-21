@@ -12,11 +12,11 @@ class UserRole(models.IntegerChoices):
 
 
 class User(AbstractUser):
-    full_mame = models.TextField("ФИО")
+    full_name = models.TextField("ФИО")
     role = models.IntegerField("Роль", choices=UserRole.choices, default=UserRole.user)
 
     def __str__(self):
-        return self.full_mame
+        return self.full_name
 
 
 @receiver(post_save, sender=User)
