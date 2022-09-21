@@ -7,7 +7,10 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from apps.booking.urls import urls
+from apps.user.urls import user_urls
 
+
+urls = urls + user_urls
 
 schema_view = get_schema_view(
    openapi.Info(

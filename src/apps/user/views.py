@@ -1,3 +1,26 @@
-from django.shortcuts import render
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken as StandartObtainAuthToken
+from rest_framework.response import Response
 
-# Create your views here.
+from .serializers import AuthTokenSerializer
+
+
+class ObtainAuthToken(StandartObtainAuthToken):
+    serializer_class = AuthTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+        token, created = Token.objects.get_or_create(user=user)
+        return Response(
+            {
+                "token": token.key,
+                "role": user.role,
+                "name": user.full_name,
+                "id": user.id,
+            }
+        )
+
+
+obtain_auth_token = ObtainAuthToken.as_view()
