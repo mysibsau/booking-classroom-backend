@@ -1,10 +1,25 @@
 from rest_framework import serializers
 
 from .models.room import Room, RoomPhoto
-from .models.equipment import Equipment
 from .models.booking import Booking
 from .models.booking_date_time import BookingDateTime
 from .models.equipment_in_room import EquipmentInRoom
+from .models.carousel import Carousel, CarouselPhoto
+
+
+class CarouselPhotoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CarouselPhoto
+        fields = ['photo', 'address', 'event']
+
+
+class CarouselSerializer(serializers.ModelSerializer):
+    carousel_photo = CarouselPhotoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Carousel
+        fields = ['spec_text', 'carousel_photo', ]
 
 
 class BookingRoomSerializer(serializers.ModelSerializer):

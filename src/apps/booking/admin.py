@@ -3,12 +3,40 @@ from django.contrib.admin import TabularInline
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 
-from apps.booking.models import Room, Equipment, EquipmentInRoom, Booking, BookingDateTime, RoomPhoto
+from apps.booking.models import \
+    Room, \
+    Equipment, \
+    EquipmentInRoom, \
+    Booking, BookingDateTime, \
+    RoomPhoto, \
+    Carousel, \
+    CarouselPhoto
 
 
 admin.site.site_header = "Панель администрирования"
 admin.site.site_title = "Панель администрирования"
 admin.site.index_title = "Добро пожаловать в панель администратора"
+
+
+class CarouselAdminInline(TabularInline):
+    extra = 0
+    model = CarouselPhoto
+
+
+@admin.register(Carousel)
+class CarouselAdmin(admin.ModelAdmin):
+    inlines = (CarouselAdminInline, )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.role == 2:
+            return True
+        return False
 
 
 class EquipAdminInline(TabularInline):
@@ -46,6 +74,21 @@ class RoomAdmin(admin.ModelAdmin):
 class EquipmentAdmin(admin.ModelAdmin):
     search_fields = ('name', )
     list_display = ('name', 'description', )
+
+    def has_add_permission(self, request):
+        if request.user.role == 2:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.role == 2:
+            return True
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.role == 2:
+            return True
+        return False
 
 
 @admin.register(Booking)

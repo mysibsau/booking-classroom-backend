@@ -4,7 +4,7 @@ from .equipment_in_room import EquipmentInRoom
 from .booking import Booking
 from .booking_date_time import BookingDateTime
 from .room import RoomPhoto
-
+from .carousel import Carousel, CarouselPhoto
 
 __all__ = [
     Room,
