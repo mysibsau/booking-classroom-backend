@@ -28,6 +28,8 @@ class CarouselAdmin(admin.ModelAdmin):
     inlines = (CarouselAdminInline, )
 
     def has_add_permission(self, request):
+        if request.user.role == 2:
+            return True
         return False
 
     def has_delete_permission(self, request, obj=None):
