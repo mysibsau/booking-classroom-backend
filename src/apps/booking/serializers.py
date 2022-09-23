@@ -53,19 +53,9 @@ class BookingDateTimeSerializer(serializers.ModelSerializer):
         fields = ['date', 'start_time', 'end_time']
 
 
-class RoomSerializer(serializers.ModelSerializer):
-    equipment = EquipmentInRoomSerializer(source='equipmentinroom_set', many=True)
-    room_photo = RoomPhotoSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Room
-        fields = "__all__"
-
-
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     booking_date_time = BookingDateTimeSerializer(many=True)
-    room = BookingRoomSerializer()
 
     class Meta:
         model = Booking
@@ -78,3 +68,36 @@ class BookingSerializer(serializers.ModelSerializer):
             BookingDateTime.objects.create(booking=booking, **dates)
 
         return booking
+
+
+class AcceptedBookingDateTimeSerializer(serializers.ModelSerializer):
+    booking_date_time = BookingDateTimeSerializer(many=True)
+
+    class Meta:
+        model = Booking
+        fields = ['booking_date_time']
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    admin = serializers.SlugRelatedField(many=False, read_only=True, slug_field='full_name')
+    equipment = EquipmentInRoomSerializer(source='equipmentinroom_set', many=True)
+    room_photo = RoomPhotoSerializer(many=True, read_only=True)
+    bookings_in_room = serializers.SerializerMethodField('get_bookings')
+
+    def get_bookings(self, room):
+        queryset = Booking.objects.all().filter(status=2, room_id=room.id)
+        serializer = AcceptedBookingDateTimeSerializer(instance=queryset, many=True, read_only=True)
+
+        return serializer.data
+
+    class Meta:
+        model = Room
+        fields = "__all__"
+
+
+class MyBookingSerializer(serializers.ModelSerializer):
+    room = BookingRoomSerializer()
+
+    class Meta:
+        model = Booking
+        fields = "__all__"

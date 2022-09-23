@@ -1,11 +1,12 @@
 from rest_framework.routers import SimpleRouter
 
-from apps.booking.views import RoomViewSet, BookingViewSet, CarouselViewSet
+from apps.booking.views import RoomViewSet, BookingViewSet, CarouselViewSet, MyBookingViewSet
 
 
 router = SimpleRouter()
 router.register("rooms", RoomViewSet)
-router.register("bookings", BookingViewSet)
+router.register("booking/create", BookingViewSet)
+router.register("bookings", MyBookingViewSet)
 router.register('carousel', CarouselViewSet)
 
 urls = router.urls

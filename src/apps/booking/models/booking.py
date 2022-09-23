@@ -22,7 +22,7 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     contact_info = models.TextField("Контактная информация")
     equipment = models.TextField("Забронированное оборудование")
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="Аудитория")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="Аудитория", related_name="bookings_in_room")
     description = models.TextField("Цель бронирования")
     status = models.IntegerField("Статус заявки", choices=BookingStatus.choices, default=BookingStatus.in_process)
     comment = models.TextField("Ваш комментарий(только в случае отказа)", blank=True, null=True)
