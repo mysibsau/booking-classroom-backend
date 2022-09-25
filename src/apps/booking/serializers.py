@@ -19,7 +19,7 @@ class CarouselSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Carousel
-        fields = ['spec_text', 'carousel_photo', ]
+        fields = ['title', 'spec_text', 'carousel_photo', ]
 
 
 class BookingRoomSerializer(serializers.ModelSerializer):
@@ -50,7 +50,7 @@ class BookingDateTimeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookingDateTime
-        fields = ['date', 'start_time', 'end_time']
+        fields = ['date_start', 'date_end', 'start_time', 'end_time']
 
 
 class BookingSerializer(serializers.ModelSerializer):
@@ -97,6 +97,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
 class MyBookingSerializer(serializers.ModelSerializer):
     room = BookingRoomSerializer()
+    booking_date_time = BookingDateTimeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Booking

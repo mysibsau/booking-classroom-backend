@@ -2,7 +2,8 @@ from django.db import models
 
 
 class Carousel(models.Model):
-    spec_text = models.TextField('Заголовок на сайте')
+    title = models.TextField("Заголовок правил")
+    spec_text = models.TextField('Правила')
 
     def __str__(self):
         return "Текст и фотографии для главной страницы"

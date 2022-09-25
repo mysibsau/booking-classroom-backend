@@ -129,6 +129,12 @@ REST_FRAMEWORK = {
 
 LANGUAGE_CODE = "ru-ru"
 
+USE_L10N = True
+
+DATE_FORMAT = 'd-m-Y'
+
+TIME_FORMAT = '%H:%M'
+
 TIME_ZONE = "Asia/Krasnoyarsk"
 
 USE_I18N = True

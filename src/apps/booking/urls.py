@@ -6,7 +6,7 @@ from apps.booking.views import RoomViewSet, BookingViewSet, CarouselViewSet, MyB
 router = SimpleRouter()
 router.register("rooms", RoomViewSet)
 router.register("booking/create", BookingViewSet)
-router.register("bookings", MyBookingViewSet)
+router.register("booking", MyBookingViewSet)
 router.register('carousel', CarouselViewSet)
 
 urls = router.urls

@@ -5,7 +5,8 @@ from .booking import Booking
 
 class BookingDateTime(models.Model):
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name="booking_date_time")
-    date = models.DateField("Дата бронирования")
+    date_start = models.DateField("Дата начала бронирования", null=True)
+    date_end = models.DateField("Дата конца бронирования", null=True)
     start_time = models.TimeField("Время начала брони")
     end_time = models.TimeField("Время конца брони")
 

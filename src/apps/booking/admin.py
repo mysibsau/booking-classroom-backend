@@ -51,7 +51,7 @@ class BookingDateTimeInLine(TabularInline):
 
     extra = 0
     model = BookingDateTime
-    readonly_fields = ('date', 'start_time', 'end_time', )
+    readonly_fields = ('date_start', 'date_end', 'start_time', 'end_time', )
     can_delete = False
 
 
