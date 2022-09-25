@@ -75,7 +75,7 @@ class RoomAdmin(admin.ModelAdmin):
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
     search_fields = ('name', )
-    list_display = ('name', 'description', )
+    list_display = ('name', 'description', 'is_spec_equip', )
 
     def has_add_permission(self, request):
         if request.user.role == 2:

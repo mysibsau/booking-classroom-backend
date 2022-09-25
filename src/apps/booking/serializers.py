@@ -33,10 +33,11 @@ class BookingRoomSerializer(serializers.ModelSerializer):
 class EquipmentInRoomSerializer(serializers.ModelSerializer):
     equipment = serializers.ReadOnlyField(source='equipment.name')
     description = serializers.ReadOnlyField(source='equipment.description')
+    is_spec_equip = serializers.ReadOnlyField(source='equipment.is_spec_equip')
 
     class Meta:
         model = EquipmentInRoom
-        fields = ['equipment', 'description', 'count']
+        fields = ['equipment', 'is_spec_equip', 'description', 'count',]
 
 
 class RoomPhotoSerializer(serializers.ModelSerializer):
