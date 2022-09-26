@@ -5,6 +5,8 @@ from .booking import Booking
 from .booking_date_time import BookingDateTime
 from .room import RoomPhoto
 from .carousel import Carousel, CarouselPhoto
+from .static_date_time import StaticDateTime
+
 
 __all__ = [
     Room,

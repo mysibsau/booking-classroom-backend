@@ -10,7 +10,8 @@ from apps.booking.models import \
     Booking, BookingDateTime, \
     RoomPhoto, \
     Carousel, \
-    CarouselPhoto
+    CarouselPhoto, \
+    StaticDateTime
 
 
 admin.site.site_header = "Панель администрирования"
@@ -21,6 +22,11 @@ admin.site.index_title = "Добро пожаловать в панель адм
 class CarouselAdminInline(TabularInline):
     extra = 0
     model = CarouselPhoto
+
+
+class StaticDateTimeAdminInLine(TabularInline):
+    extra = 0
+    model = StaticDateTime
 
 
 @admin.register(Carousel)
@@ -62,7 +68,7 @@ class RoomPhotoInLine(TabularInline):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    inlines = (EquipAdminInline, RoomPhotoInLine)
+    inlines = (EquipAdminInline, RoomPhotoInLine, StaticDateTimeAdminInLine)
 
     def get_queryset(self, request):
         if request.user.role == 1:

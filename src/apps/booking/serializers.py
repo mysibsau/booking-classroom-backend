@@ -5,6 +5,7 @@ from .models.booking import Booking
 from .models.booking_date_time import BookingDateTime
 from .models.equipment_in_room import EquipmentInRoom
 from .models.carousel import Carousel, CarouselPhoto
+from .models.static_date_time import StaticDateTime
 
 
 class CarouselPhotoSerializer(serializers.ModelSerializer):
@@ -37,7 +38,7 @@ class EquipmentInRoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EquipmentInRoom
-        fields = ['equipment', 'is_spec_equip', 'description', 'count',]
+        fields = ['equipment', 'is_spec_equip', 'description', 'count', ]
 
 
 class RoomPhotoSerializer(serializers.ModelSerializer):
@@ -71,14 +72,6 @@ class BookingSerializer(serializers.ModelSerializer):
         return booking
 
 
-class AcceptedBookingDateTimeSerializer(serializers.ModelSerializer):
-    booking_date_time = BookingDateTimeSerializer(many=True)
-
-    class Meta:
-        model = Booking
-        fields = ['booking_date_time']
-
-
 class RoomSerializer(serializers.ModelSerializer):
     admin = serializers.SlugRelatedField(many=False, read_only=True, slug_field='full_name')
     equipment = EquipmentInRoomSerializer(source='equipmentinroom_set', many=True)
@@ -87,9 +80,12 @@ class RoomSerializer(serializers.ModelSerializer):
 
     def get_bookings(self, room):
         queryset = Booking.objects.all().filter(status=2, room_id=room.id)
-        serializer = AcceptedBookingDateTimeSerializer(instance=queryset, many=True, read_only=True)
+        queryset = BookingDateTime.objects.all().filter(booking_id__in=queryset)
+        date_time_queryset = StaticDateTime.objects.all().filter(room_id=room.id)
+        booking_date_time_serializer = BookingDateTimeSerializer(instance=queryset, many=True, read_only=True)
+        static_date_time_serializer = BookingDateTimeSerializer(instance=date_time_queryset, many=True, read_only=True)
 
-        return serializer.data
+        return booking_date_time_serializer.data + static_date_time_serializer.data
 
     class Meta:
         model = Room
