@@ -102,13 +102,17 @@ class EquipmentAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
 
+    # def children_display(self, obj):
+    #     return [item for item in obj.booking_date_time.all()]
+
     search_fields = ('room__address', )
     inlines = (BookingDateTimeInLine,)
     list_display = ('user', 'room', 'booking_status', )
     readonly_fields = ('user', 'room', 'contact_info', 'equipment', 'status', 'description', 'personal_status', 'position')
     list_filter = ('status', )
     change_form_template = "admin/booking_change_form.html"
-    fields = ('user', 'room', 'contact_info', 'equipment', 'description', 'status', 'personal_status', 'position', 'comment', )
+    fields = ('user', 'room', 'contact_info', 'equipment', 'title', 'description', 'status', 'personal_status', 'position', 'comment', )
+    # children_display.short_description = "Даты брони"
 
     def booking_status(self, obj):
         if obj.status == 0:

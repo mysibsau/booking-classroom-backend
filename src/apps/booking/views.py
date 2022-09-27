@@ -8,13 +8,18 @@ from .models.booking import Booking
 from .models.carousel import Carousel
 
 
-class ResultsSetPagination(PageNumberPagination):
+class RoomResultSetPagination(PageNumberPagination):
     page_size = 6
     page_size_query_param = 'page_size'
 
 
+class MyBookingResultSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+
+
 class RoomViewSet(ReadOnlyModelViewSet):
-    pagination_class = ResultsSetPagination
+    pagination_class = RoomResultSetPagination
     serializer_class = RoomSerializer
     filter_fields = ['address', 'capacity', ]
     queryset = Room.objects.get_queryset().order_by('id')
@@ -32,9 +37,16 @@ class BookingViewSet(ModelViewSet):
 
 
 class MyBookingViewSet(ReadOnlyModelViewSet):
+    pagination_class = MyBookingResultSetPagination
     serializer_class = MyBookingSerializer
-    queryset = Booking.objects.all()
+    queryset = Booking.objects.get_queryset().order_by('id')
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+        total = Booking.objects.filter(user=self.request.user).count()
+        if total > 50:
+            queryset = Booking.objects.filter(user=self.request.user)[total - 50:total]
+            return queryset
+
+        queryset = Booking.objects.filter(user=self.request.user)
+        return queryset
