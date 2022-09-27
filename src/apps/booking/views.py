@@ -1,3 +1,6 @@
+from rest_framework import filters as rf_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as filters
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated
@@ -18,10 +21,21 @@ class MyBookingResultSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
 
 
+class ProductFilter(filters.FilterSet):
+    min_capacity = filters.NumberFilter(field_name="capacity", lookup_expr='gte')
+    equipment = filters.AllValuesFilter(field_name="equipment__name")
+
+    class Meta:
+        model = Room
+        fields = ['min_capacity', 'equipment']
+
+
 class RoomViewSet(ReadOnlyModelViewSet):
+    filter_backends = [rf_filters.SearchFilter, DjangoFilterBackend]
     pagination_class = RoomResultSetPagination
     serializer_class = RoomSerializer
-    filter_fields = ['address', 'capacity', ]
+    search_fields = ['address', ]
+    filterset_class = ProductFilter
     queryset = Room.objects.get_queryset().order_by('id')
 
 
