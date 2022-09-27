@@ -108,7 +108,7 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ('room__address', )
     inlines = (BookingDateTimeInLine,)
     list_display = ('user', 'room', 'booking_status', )
-    readonly_fields = ('user', 'room', 'contact_info', 'equipment', 'status', 'description', 'personal_status', 'position')
+    readonly_fields = ('user', 'room', 'contact_info', 'equipment', 'status', 'title', 'description', 'personal_status', 'position')
     list_filter = ('status', )
     change_form_template = "admin/booking_change_form.html"
     fields = ('user', 'room', 'contact_info', 'equipment', 'title', 'description', 'status', 'personal_status', 'position', 'comment', )
