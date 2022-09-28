@@ -9,6 +9,7 @@ class UserRole(models.IntegerChoices):
     user = 0, "Пользователь"
     admin = 1, "Администратор"
     super_admin = 2, "Супер администратор"
+    pseudo_admin = 3, "Доп. администратор"
 
 
 class User(AbstractUser):

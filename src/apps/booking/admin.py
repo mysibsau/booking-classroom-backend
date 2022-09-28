@@ -39,6 +39,8 @@ class CarouselAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.role == 2:
+            return True
         return False
 
     def has_change_permission(self, request, obj=None):
@@ -69,13 +71,21 @@ class RoomPhotoInLine(TabularInline):
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     inlines = (EquipAdminInline, RoomPhotoInLine, StaticDateTimeAdminInLine)
+    fields = ('admin', 'pseudo_admins', 'address', 'description', 'capacity')
 
     def get_queryset(self, request):
-        if request.user.role == 1:
-            queryset = Room.objects.all().filter(admin=request.user)
+        if request.user.role == 2:
+            return super().get_queryset(request)
+        elif request.user.role == 3:
+            queryset = Room.objects.all().filter(pseudo_admins=request.user)
             return queryset
+        queryset = Room.objects.all().filter(admin=request.user)
+        return queryset
 
-        return super().get_queryset(request)
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.role == 2:
+            return super(RoomAdmin, self).get_readonly_fields(request, obj)
+        return 'admin', 'pseudo_admins'
 
 
 @admin.register(Equipment)
@@ -147,5 +157,7 @@ class BookingAdmin(admin.ModelAdmin):
         if request.user.role == 1:
             queryset = Booking.objects.all().filter(room__admin=request.user)
             return queryset
-
+        elif request.user.role == 3:
+            queryset = Booking.objects.all().filter(room__pseudo_admins=request.user, status=2)
+            return queryset
         return super().get_queryset(request)
