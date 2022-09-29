@@ -20,7 +20,7 @@ class CarouselSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Carousel
-        fields = ['title', 'spec_text', 'carousel_photo', ]
+        fields = ['title', 'spec_text', 'carousel_photo', 'pseudo_text_booking', 'pseudo_text_equipment']
 
 
 class BookingRoomSerializer(serializers.ModelSerializer):
