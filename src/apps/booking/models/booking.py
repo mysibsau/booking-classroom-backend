@@ -26,7 +26,7 @@ class Booking(models.Model):
     title = models.TextField('Название мероприятия')
     description = models.TextField("Описание")
     status = models.IntegerField("Статус заявки", choices=BookingStatus.choices, default=BookingStatus.in_process)
-    comment = models.TextField("Ваш комментарий(только в случае отказа)", blank=True, null=True)
+    comment = models.TextField("Ваш комментарий", blank=True, null=True)
     personal_status = models.IntegerField("Статус", choices=PersonalStatus.choices, default=PersonalStatus.student)
     position = models.TextField("Должность/Группа", blank=True, default="", help_text="Должность или группа")
 

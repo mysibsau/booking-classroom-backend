@@ -112,17 +112,18 @@ class EquipmentAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
 
-    # def children_display(self, obj):
-    #     return [item for item in obj.booking_date_time.all()]
+    def booking_date_time_display(self, obj):
+
+        return obj.booking_date_time.first()
 
     search_fields = ('room__address', )
     inlines = (BookingDateTimeInLine,)
-    list_display = ('user', 'room', 'booking_status', )
+    list_display = ('user', 'room', 'booking_date_time_display', 'booking_status', )
     readonly_fields = ('user', 'room', 'contact_info', 'equipment', 'status', 'title', 'description', 'personal_status', 'position')
     list_filter = ('status', )
     change_form_template = "admin/booking_change_form.html"
     fields = ('user', 'room', 'contact_info', 'equipment', 'title', 'description', 'status', 'personal_status', 'position', 'comment', )
-    # children_display.short_description = "Даты брони"
+    booking_date_time_display.short_description = "Даты и время брони"
 
     def booking_status(self, obj):
         if obj.status == 0:
@@ -138,7 +139,6 @@ class BookingAdmin(admin.ModelAdmin):
     def response_change(self, request, obj):
         if '_accept' in request.POST:
             obj.status = 2
-            obj.comment = None
             obj.save()
             self.message_user(request, 'Заявка одобрена!')
             return HttpResponseRedirect("../")

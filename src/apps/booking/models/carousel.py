@@ -1,16 +1,19 @@
 from django.db import models
+from PIL import Image
 
 
 class Carousel(models.Model):
     title = models.TextField("Заголовок правил")
     spec_text = models.TextField('Правила')
+    pseudo_text_booking = models.TextField('Описание заявки')
+    pseudo_text_equipment = models.TextField('Описание оборудования')
 
     def __str__(self):
-        return "Текст и фотографии для главной страницы"
+        return "Общие настройки сайта"
 
     class Meta:
-        verbose_name = 'Карусель'
-        verbose_name_plural = 'Карусель'
+        verbose_name = 'Общие настройки сайта'
+        verbose_name_plural = 'Общие настройки сайта'
 
 
 class CarouselPhoto(models.Model):
@@ -30,3 +33,11 @@ class CarouselPhoto(models.Model):
     class Meta:
         verbose_name = 'Фотографии в карусели'
         verbose_name_plural = 'Фотографии в карусели'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.photo.path)
+
+        output_size = (1280, 720)
+        img.thumbnail(output_size)
+        img.save(self.photo.path)
