@@ -58,7 +58,9 @@ class ObtainAuthToken(StandartObtainAuthToken):
                     "name": user.full_name,
                     "id": user.id,
                 }
-        return auth.json()
+        return {
+            "status_code": auth.status_code
+        }
 
 
 obtain_auth_token = ObtainAuthToken.as_view()
