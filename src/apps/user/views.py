@@ -48,29 +48,7 @@ class ObtainAuthToken(StandartObtainAuthToken):
                 },
             headers=headers
         )
-        if auth.status_code == 200:
-            full_name = requests.post(
-                url=f"{base_url}/me",
-                params={
-                    "token": auth.json()['token']
-                }
-            )
-            user = User.objects.create(
-                full_name=full_name.json()['full_name'],
-                username=request.data['username']
-            )
-            user.set_password(request.data['password'])
-            user.save()
-            token, created = Token.objects.get_or_create(user=user)
-            return {
-                    "token": token.key,
-                    "role": user.role,
-                    "name": user.full_name,
-                    "id": user.id,
-                }
-        return {
-            "status_code": auth
-        }
+        return auth
 
 
 obtain_auth_token = ObtainAuthToken.as_view()
