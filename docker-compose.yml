@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  database:
+    container_name: booking_classroom_database
+    image: postgres:13.4-alpine
+    restart: always
+    env_file: src/.env
+    volumes:
+        - ./volumes/db/data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: booking_classroom_backend
+    env_file: src/.env
+    restart: always
+    volumes:
+      - ./src:/app
+      - ./volumes/media:/media
+      - ./volumes/static:/static
+    depends_on:
+      - database
+    ports:
+      - "80:80"
+    command: bash -c "
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn --bind 0.0.0.0:80
+        --timeout 600
+        --log-level debug
+        --reload
+        --max-requests 100
+        --workers 4 core.wsgi:application"

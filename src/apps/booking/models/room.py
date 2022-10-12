@@ -17,7 +17,12 @@ class Room(models.Model):
         verbose_name="Администратор",
         related_name="room_admin"
     )
-    pseudo_admins = models.ManyToManyField(User, verbose_name="Доп. администраторы")
+    pseudo_admins = models.ManyToManyField(
+        User,
+        verbose_name="Доп. администраторы",
+        null=True,
+        blank=True,
+    )
     description = models.TextField("Описание")
     address = models.TextField("Адрес")
     capacity = models.PositiveIntegerField("Вместимость")
