@@ -9,3 +9,4 @@ __pycache__
 *.jpeg
 volumes
 src/staticfiles
+src/.env
