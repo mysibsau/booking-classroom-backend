@@ -75,9 +75,6 @@ class BookingSerializer(serializers.ModelSerializer):
                 (date_time[0]['start_time'] is None and date_time[0]['end_time'] is not None):
             raise exceptions.ValidationError
 
-        if attrs['status'] != 0:
-            raise exceptions.ValidationError
-
         return attrs
 
     def create(self, validated_data: dict):
