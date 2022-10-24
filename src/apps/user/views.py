@@ -26,8 +26,8 @@ class ObtainAuthToken(StandartObtainAuthToken):
                     "id": user.id,
                 }
             )
-        response = self.__check_user(request)
-        return Response(response)
+        response, status_code = self.__check_user(request)
+        return Response(response, status=status_code)
 
     def __check_user(self, request):
         base_url = settings.AUTH_URL
@@ -60,10 +60,9 @@ class ObtainAuthToken(StandartObtainAuthToken):
                     "role": user.role,
                     "name": user.full_name,
                     "id": user.id,
-                }
-        return {
-            "detail": "Неверный логин или пароль"
-        }
+                }, 200
+
+        return {"detail": "Неверный логин или пароль"}, 401
 
 
 obtain_auth_token = ObtainAuthToken.as_view()
