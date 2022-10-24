@@ -60,7 +60,7 @@ class MyBookingViewSet(ReadOnlyModelViewSet):
         total = Booking.objects.filter(user=self.request.user).count()
         if total > 50:
             queryset = Booking.objects.filter(user=self.request.user)[total - 50:total]
-            return queryset
+            return queryset[::-1]
 
         queryset = Booking.objects.filter(user=self.request.user)
-        return queryset
+        return queryset[::-1]
