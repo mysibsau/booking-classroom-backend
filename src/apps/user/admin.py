@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 from apps.user import models
 
@@ -18,3 +17,16 @@ class UserAdmin(admin.ModelAdmin):
         'user_permissions',
         'username'
     )
+
+    def get_search_results(self, request, queryset, search_term):
+        path = request.get_full_path_info()
+        queryset, may_have_duplicates = super().get_search_results(request, queryset, search_term, )
+        if path == '/admin/autocomplete/?app_label=booking&model_name=room&field_name=admin':
+            queryset = queryset.exclude(role__in=[0, 3])
+            return queryset, may_have_duplicates
+
+        elif path == '/admin/autocomplete/?app_label=booking&model_name=room&field_name=pseudo_admins':
+            queryset = queryset.exclude(role__in=[0, 1, 2])
+            return queryset, may_have_duplicates
+
+        return queryset, may_have_duplicates
