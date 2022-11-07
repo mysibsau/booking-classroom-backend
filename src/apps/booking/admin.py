@@ -1,10 +1,9 @@
-from django import forms
 from django.contrib import admin, messages
 from django.contrib.admin import TabularInline
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 
-from apps.user.models import User
+
 from apps.booking.models import \
     Room, \
     Equipment, \
@@ -72,19 +71,10 @@ class RoomPhotoInLine(TabularInline):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    search_fields = ('address',)
+    autocomplete_fields = ('admin', 'pseudo_admins')
+    search_fields = ('address', )
     inlines = (EquipAdminInline, RoomPhotoInLine, StaticDateTimeAdminInLine)
     fields = ('admin', 'pseudo_admins', 'address', 'description', 'capacity')
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "admin":
-            kwargs["queryset"] = User.objects.filter(role=1)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == "pseudo_admins":
-            kwargs["queryset"] = User.objects.filter(role=3)
-        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def get_queryset(self, request):
         if request.user.role == 2:
