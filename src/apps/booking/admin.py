@@ -74,7 +74,7 @@ class RoomAdmin(admin.ModelAdmin):
     autocomplete_fields = ('admin', 'pseudo_admins')
     search_fields = ('address', )
     inlines = (EquipAdminInline, RoomPhotoInLine, StaticDateTimeAdminInLine)
-    fields = ('admin', 'pseudo_admins', 'address', 'description', 'capacity')
+    fields = ('admin', 'pseudo_admins', 'admin_contact_info', 'address', 'description', 'capacity')
 
     def get_queryset(self, request):
         if request.user.role == 2:
