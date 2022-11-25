@@ -67,10 +67,15 @@ class BookingSerializer(serializers.ModelSerializer):
         date_time = attrs['booking_date_time']
         if date_time[0]['date_start'] > date_time[0]['date_end']:
             raise exceptions.ValidationError
+
+        if date_time[0]['date_start'] == date_time[0]['date_end'] and date_time[0]['start_time'] is None and date_time[0]['end_time' is None]:
+            raise exceptions.ValidationError
+
         if date_time[0]['start_time'] is not None and date_time[0]['end_time'] is not None:
             if date_time[0]['start_time'] > date_time[0]['end_time']:
                 raise exceptions.ValidationError
             return attrs
+
         if (date_time[0]['start_time'] is not None and date_time[0]['end_time'] is None) or \
                 (date_time[0]['start_time'] is None and date_time[0]['end_time'] is not None):
             raise exceptions.ValidationError
