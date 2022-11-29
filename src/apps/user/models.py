@@ -17,6 +17,8 @@ class User(AbstractUser):
     role = models.IntegerField("Роль", choices=UserRole.choices, default=UserRole.user)
 
     def __str__(self):
+        if self.full_name == '-':
+            return self.username
         return self.full_name
 
 
