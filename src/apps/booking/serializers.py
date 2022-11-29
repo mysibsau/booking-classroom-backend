@@ -64,8 +64,6 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
-        if attrs['status'] != 0:
-            raise exceptions.ValidationError
 
         date_time = attrs['booking_date_time']
 
