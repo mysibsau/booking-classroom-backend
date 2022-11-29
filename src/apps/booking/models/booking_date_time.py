@@ -11,8 +11,10 @@ class BookingDateTime(models.Model):
     end_time = models.TimeField("Время конца брони", null=True, blank=True)
 
     def __str__(self):
-        if self.date_start == self.date_end:
+        if self.date_start == self.date_end and self.start_time is not None:
             return f"{self.date_start.strftime('%d-%m-%Y')}: {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')}"
+        elif self.date_start == self.date_end and self.start_time is None:
+            return f"{self.date_start.strftime('%d-%m-%Y')}(Весь день)"
         return f"{self.date_start.strftime('%d-%m-%Y')} -- {self.date_end.strftime('%d-%m-%Y')}"
 
     class Meta:
