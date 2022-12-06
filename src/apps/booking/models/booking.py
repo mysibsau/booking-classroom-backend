@@ -21,7 +21,7 @@ class BookingStatus(models.IntegerChoices):
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     contact_info = models.TextField("Контактная информация")
-    equipment = models.TextField("Забронированное оборудование")
+    equipment = models.TextField("Забронированное оборудование", blank=True, null=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="Аудитория", related_name="bookings_in_room")
     title = models.TextField('Название мероприятия')
     description = models.TextField("Описание")

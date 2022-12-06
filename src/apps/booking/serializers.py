@@ -58,6 +58,7 @@ class BookingDateTimeSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     booking_date_time = BookingDateTimeSerializer(many=True)
+    equipment = serializers.CharField(allow_null=True, allow_blank=True)
 
     class Meta:
         model = Booking
