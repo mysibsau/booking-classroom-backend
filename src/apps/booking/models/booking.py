@@ -29,6 +29,7 @@ class Booking(models.Model):
     comment = models.TextField("Ваш комментарий", blank=True, null=True)
     personal_status = models.IntegerField("Статус", choices=PersonalStatus.choices, default=PersonalStatus.student)
     position = models.TextField("Должность/Группа", blank=True, default="", help_text="Должность или группа")
+    created_at = models.DateTimeField("Дата создания заявки", auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user}, {self.room}"
