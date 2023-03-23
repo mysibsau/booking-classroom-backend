@@ -3,7 +3,6 @@ from django.contrib.admin import TabularInline
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 
-
 from apps.booking.models import \
     Room, \
     Equipment, \
@@ -116,16 +115,15 @@ class EquipmentAdmin(admin.ModelAdmin):
 class BookingAdmin(admin.ModelAdmin):
 
     def booking_date_time_display(self, obj):
-
         return obj.booking_date_time.first()
 
     search_fields = ('room__address', 'user__full_name')
     inlines = (BookingDateTimeInLine,)
     list_display = ('user', 'room', 'booking_date_time_display', 'booking_status', )
-    readonly_fields = ('user', 'room', 'contact_info', 'equipment', 'status', 'title', 'description', 'personal_status', 'position')
+    readonly_fields = ('created_at', 'user', 'room', 'contact_info', 'equipment', 'status', 'title', 'description', 'personal_status', 'position')
     list_filter = ('status', )
     change_form_template = "admin/booking_change_form.html"
-    fields = ('user', 'room', 'contact_info', 'equipment', 'title', 'description', 'status', 'personal_status', 'position', 'comment', )
+    fields = ('created_at', 'user', 'room', 'contact_info', 'equipment', 'title', 'description', 'status', 'personal_status', 'position', 'comment', )
     booking_date_time_display.short_description = "Даты и время брони"
 
     def booking_status(self, obj):
