@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
-from django.contrib.admin import TabularInline
+from django.contrib.admin import TabularInline, DateFieldListFilter
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 from django.utils.html import format_html
 
 from apps.booking.models import \
@@ -111,6 +112,21 @@ class EquipmentAdmin(admin.ModelAdmin):
         return False
 
 
+class CustomDateFieldFilter(DateFieldListFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        now = timezone.now()
+        self.links = (
+            ('Любая дата', {}),
+            ('Сегодня', {'{}__gte'.format(self.field_path): now.date().strftime('%Y-%m-%d'),
+                         '{}__lt'.format(self.field_path): (now.date() + timezone.timedelta(days=1)).strftime('%Y-%m-%d')}),
+            ('Завтра', {'{}__gte'.format(self.field_path): (now.date() + timezone.timedelta(days=1)).strftime('%Y-%m-%d'),
+                        '{}__lt'.format(self.field_path): (now.date() + timezone.timedelta(days=2)).strftime('%Y-%m-%d')}),
+            ('Предстоящие 7 дней', {'{}__gte'.format(self.field_path): (now.date() + timezone.timedelta(days=1)).strftime('%Y-%m-%d'),
+                                    '{}__lt'.format(self.field_path): (now.date() + timezone.timedelta(days=7)).strftime('%Y-%m-%d')}),
+        )
+
+
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
 
@@ -121,10 +137,11 @@ class BookingAdmin(admin.ModelAdmin):
     inlines = (BookingDateTimeInLine,)
     list_display = ('user', 'room', 'booking_date_time_display', 'booking_status', )
     readonly_fields = ('created_at', 'user', 'room', 'contact_info', 'equipment', 'status', 'title', 'description', 'personal_status', 'position')
-    list_filter = ('status', )
+    list_filter = ('status', ('booking_date_time__date_start', CustomDateFieldFilter), )
     change_form_template = "admin/booking_change_form.html"
     fields = ('created_at', 'user', 'room', 'contact_info', 'equipment', 'title', 'description', 'status', 'personal_status', 'position', 'comment', )
     booking_date_time_display.short_description = "Даты и время брони"
+    # ordering = ('booking_date_time__date_start',)
 
     def booking_status(self, obj):
         if obj.status == 0:
