@@ -133,7 +133,7 @@ class BookingAdmin(admin.ModelAdmin):
     def booking_date_time_display(self, obj):
         return obj.booking_date_time.first()
 
-    search_fields = ('room__address', 'user__full_name')
+    search_fields = ('room__address', 'user__full_name', 'booking_date_time__date_start')
     inlines = (BookingDateTimeInLine,)
     list_display = ('user', 'room', 'booking_date_time_display', 'booking_status', )
     readonly_fields = ('created_at', 'user', 'room', 'contact_info', 'equipment', 'status', 'title', 'description', 'personal_status', 'position')
