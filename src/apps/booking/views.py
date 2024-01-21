@@ -1,3 +1,4 @@
+from django.db.models import Min
 from rest_framework import filters as rf_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
@@ -53,14 +54,18 @@ class BookingViewSet(ModelViewSet):
 class MyBookingViewSet(ReadOnlyModelViewSet):
     pagination_class = MyBookingResultSetPagination
     serializer_class = MyBookingSerializer
-    queryset = Booking.objects.get_queryset().order_by('id')
+    queryset = Booking.objects.get_queryset()
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        total = Booking.objects.filter(user=self.request.user).count()
+        queryset = Booking.objects.filter(user=self.request.user).annotate(
+                min_date_start=Min('booking_date_time__date_start')
+            ).order_by('min_date_start')
+
+        total = queryset.count()
+
         if total > 50:
-            queryset = Booking.objects.filter(user=self.request.user)[total - 50:total]
+            queryset = queryset[total - 50:total]
             return queryset[::-1]
 
-        queryset = Booking.objects.filter(user=self.request.user)
         return queryset[::-1]
